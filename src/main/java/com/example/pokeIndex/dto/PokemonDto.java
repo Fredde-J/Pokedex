@@ -4,27 +4,68 @@ import com.example.pokeIndex.entities.Pokemon;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PokemonDto {
     @Autowired
-    private Pokemon pokemon = new Pokemon();
+    //private Pokemon pokemon = new Pokemon();
 
     @JsonProperty("name")
     private String name;
     @JsonProperty("abilities")
-    private List<String> abilities;
+    private List<Object> abilities = new ArrayList<>();
     @JsonProperty("stats")
-    private List<String> stats;
-    @JsonProperty("species")
-    private String species;
+    private List<Object> stats;
+    @JsonProperty("types")
+    private List<Object> types;
 
-    public PokemonDto(String name, List<String> abilities, List<String> stats, String species) {
+
+    public PokemonDto() {
+
+    }
+
+    public PokemonDto(String name, List<Object> abilities, List<Object> stats , List<Object> types ) {
         this.name = name;
         this.abilities = abilities;
         this.stats = stats;
-        this.species = species;
+        this.types = types;
 
-        Pokemon pokemon = new Pokemon(name,abilities,stats,species);
+       // Pokemon pokemon = new Pokemon(name,abilities,stats,species);
+    }
+
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Object> getAbilities() {
+        return abilities;
+    }
+
+    public void setAbilities(List<Object> abilities) {
+        this.abilities = abilities;
+    }
+
+    public List<Object> getStats() {
+        return stats;
+    }
+
+    public void setStats(List<Object> stats) {
+        this.stats = stats;
+    }
+
+    public List<Object> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<Object> types) {
+        this.types = types;
     }
 }

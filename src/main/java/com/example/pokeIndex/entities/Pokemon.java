@@ -1,12 +1,13 @@
 package com.example.pokeIndex.entities;
 import org.springframework.data.annotation.Id;
 import java.util.List;
+import java.util.Objects;
 
 public class Pokemon {
     @Id
     private String id;
     private String name;
-    private List<String> abilities;
+    private List<Objects> abilities;
     private List<String> stats;
     private String species;
 
@@ -14,9 +15,9 @@ public class Pokemon {
 
     }
 
-    public Pokemon(String name, List<String> ablilities, List<String> stats, String species) {
+    public Pokemon(String name, List<Objects> abilities, List<String> stats, String species) {
         this.name = name;
-        this.abilities = ablilities;
+        this.abilities = abilities;
         this.stats = stats;
         this.species = species;
     }
@@ -37,11 +38,11 @@ public class Pokemon {
         this.name = name;
     }
 
-    public List<String> getAbilities() {
+    public List<Objects> getAbilities() {
         return abilities;
     }
 
-    public void setAbilities(List<String> abilities) {
+    public void setAbilities(List<Objects> abilities) {
         this.abilities = abilities;
     }
 
