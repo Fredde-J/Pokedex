@@ -1,12 +1,12 @@
 package com.example.pokeIndex.repositories;
 
-import com.example.pokeIndex.entities.Pokemon;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -21,19 +21,16 @@ public class PokemonsNameRepo  {
     @Autowired
     private MongoClient client;
 
-    public void GetAllNames(){
+    public void getAllNames(){
         List<Object> allNames = new ArrayList<>();
         MongoCollection<Document> data = client.getDatabase(databaseName).getCollection(collectionName);
         data.find().map(Document::toJson).forEach(allNames::add);
         System.out.println("all pokemons");
-        Object names = allNames.get(0);
-        System.out.println(names);
+        var names = allNames.toArray();
+
     }
-    public void Getname(){
-        List<Object> allNames = new ArrayList<>();
-        MongoCollection<Document> data = client.getDatabase(databaseName).getCollection(collectionName);
-        data.find().map(Document::toJson).forEach(allNames::add);
-        System.out.println("all pokemons");
-        System.out.println(allNames.get(2));
+    public void getname(String name){
+        MongoOperations mongoOperations = new MongoTemplate(MongoClients.create(), "pokeDex");
+
     }
 }

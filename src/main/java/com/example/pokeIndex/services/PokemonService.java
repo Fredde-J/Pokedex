@@ -4,10 +4,7 @@ import com.example.pokeIndex.mapper.PokemonMapper;
 import com.example.pokeIndex.repositories.PokemonsNameRepo;
 import com.example.pokeIndex.repositories.PokemonsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 
@@ -26,7 +23,7 @@ public class PokemonService {
 
     public List<Pokemon> findAll(String name){
         name = name.toLowerCase();
-        pokemonsNameRepo.GetAllNames();
+        pokemonsNameRepo.getAllNames();
         var pokemons = pokemonsRepo.findAll();
 
 
