@@ -1,14 +1,10 @@
 package com.example.pokeIndex.controllers;
 
-import com.example.pokeIndex.dto.PokemonDto;
 import com.example.pokeIndex.entities.Pokemon;
 import com.example.pokeIndex.services.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,6 +23,12 @@ public class PokemonController {
         var pokemons = pokemonService.findAll(name);
 
         return ResponseEntity.ok(pokemons);
+
+    }
+    @GetMapping("/{ability}/{type}")
+    public ResponseEntity<List<Pokemon>> findPokemonByAbilityAndType(@PathVariable String ability,@PathVariable String type) {
+         var pokemons = pokemonService.findByAbilityAndType(ability, type);
+         return ResponseEntity.ok(pokemons);
 
     }
 }

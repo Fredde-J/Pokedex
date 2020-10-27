@@ -1,4 +1,5 @@
 package com.example.pokeIndex.services;
+
 import com.example.pokeIndex.entities.Pokemon;
 import com.example.pokeIndex.mapper.PokemonMapper;
 import com.example.pokeIndex.repositories.PokemonsNameRepo;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -22,11 +24,11 @@ public class PokemonService {
 
 
     public List<Pokemon> findAll(String name){
-        name = name.toLowerCase();
         pokemonsNameRepo.getAllNames();
         var pokemons = pokemonsRepo.findAll();
-
-
+        pokemons = pokemons.stream()
+                .filter(pokemon -> pokemon.getName().toLowerCase().contains(name.toLowerCase()))
+                .collect(Collectors.toList());
         if(pokemons.isEmpty()){
             var pokemonsDto = pokemonConsumerService.searchPokemon(name);
             if(pokemonsDto!=null){
@@ -39,4 +41,22 @@ public class PokemonService {
         return pokemons;
 
     };
+
+    public List<Pokemon> findByAbilityAndType(String ability, String type) {
+
+        System.out.println(ability);
+        System.out.println(type);
+        var pokemons = pokemonsRepo.findAll();
+        System.out.println(pokemons.get(0).getAbilities());
+        pokemons  = pokemons.stream()
+                .filter(pokemon -> pokemon.getAbilities().toString().contains(ability.toLowerCase()))
+                .filter(pokemon -> pokemon.getTypes().toString().contains(type.toLowerCase())).collect(Collectors.toList());
+        System.out.println(pokemons);
+        if(pokemons.isEmpty()){
+            System.out.println("tomt");
+            pokemonConsumerService.searchPokemonByAbilitiesAndTypes(ability,type);
+        }
+
+        return pokemons;
+    }
 }

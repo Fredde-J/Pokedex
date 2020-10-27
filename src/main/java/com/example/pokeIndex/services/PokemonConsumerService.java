@@ -19,9 +19,21 @@ public class PokemonConsumerService {
     }
 
     public PokemonDto searchPokemon(String name){
-        var urlWithName = url + name;
+        var urlWithName = url +"pokemon/"+ name;
         System.out.println(urlWithName);
         var pokemon = restTemplate.getForObject(urlWithName, PokemonDto.class);
+        if(pokemon==null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"no pokemon found!");
+        }
+        return pokemon;
+    };
+
+    public PokemonDto searchPokemonByAbilitiesAndTypes(String ability, String type){
+        var urlWithAbility = url +"ability/"+ ability;
+        var urlWithType = url +"type/"+ type;
+        System.out.println(urlWithAbility);
+        System.out.println(urlWithType);
+        var pokemon = restTemplate.getForObject(urlWithType, PokemonDto.class);
         if(pokemon==null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"no pokemon found!");
         }
