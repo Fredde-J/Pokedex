@@ -4,6 +4,7 @@ import com.example.pokeIndex.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,6 +43,16 @@ public class MyUserDetailsService implements UserDetailsService {
         return user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // ROLE_ADMIN -> ADMIN
                 .collect(Collectors.toList());
+    }
+
+    public Boolean checkUserRole(String role) {
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().toUpperCase().equals("ROLE_"+role));
+    }
+    public String getCurrentUser() {
+        // the login session is stored between page reloads,
+        // and we can access the current authenticated User with this
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
 

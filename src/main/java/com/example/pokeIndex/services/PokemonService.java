@@ -5,7 +5,10 @@ import com.example.pokeIndex.mapper.PokemonMapper;
 import com.example.pokeIndex.repositories.PokemonsNameRepo;
 import com.example.pokeIndex.repositories.PokemonsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +24,8 @@ public class PokemonService {
     private PokemonConsumerService pokemonConsumerService;
     @Autowired
     private PokemonsNameRepo pokemonsNameRepo;
+
+
 
 
     public List<Pokemon> findAll(String name){
@@ -58,5 +63,27 @@ public class PokemonService {
         }
 
         return pokemons;
+    }
+
+    public Pokemon findById(String id) {
+        return pokemonsRepo.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("not Found")));
+    }
+
+    public Pokemon save(Pokemon pokemon) {
+        return pokemonsRepo.save(pokemon);
+    }
+
+    public void update(String id, Pokemon pokemon) {
+        if(!pokemonsRepo.existsById(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("could not find pokemon by id"+id));
+        }
+        pokemon.setId(id);
+        pokemonsRepo.save(pokemon);
+    }
+    public void delete(String id){
+        if(!pokemonsRepo.existsById(id)){
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, String.format("could not fin user by id"+id));
+        }
+        pokemonsRepo.deleteById(id);
     }
 }

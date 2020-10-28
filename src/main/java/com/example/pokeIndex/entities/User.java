@@ -1,12 +1,16 @@
 package com.example.pokeIndex.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.List;
 public class User {
     @Id
     private String id;
     private String name;
+    @Indexed(unique=true)
     private String username;
     private String password;
     private List<String> roles;
@@ -41,15 +45,11 @@ public class User {
     public String getUsername() {
         return username;
     }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
-
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }

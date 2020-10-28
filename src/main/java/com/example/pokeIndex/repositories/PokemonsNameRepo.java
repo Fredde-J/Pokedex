@@ -1,5 +1,6 @@
 package com.example.pokeIndex.repositories;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -24,9 +25,9 @@ public class PokemonsNameRepo  {
     public void getAllNames(){
         List<Object> allNames = new ArrayList<>();
         MongoCollection<Document> data = client.getDatabase(databaseName).getCollection(collectionName);
-        data.find().map(Document::toJson).forEach(allNames::add);
+        data.find(new BasicDBObject("names.name", "charizard"));
         System.out.println("all pokemons");
-        var names = allNames.toArray();
+        System.out.println(data.find());
 
     }
     public void getname(String name){

@@ -18,6 +18,7 @@ public class UserService {
     private UserRepo userRepo;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired MyUserDetailsService myUserDetailsService;
 
     public List<User> findAll(String username) {
         if(username != null) {
@@ -47,6 +48,26 @@ public class UserService {
         if(!userRepo.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Could not find the user by id %s.", id));
         }
+        var currentUserName = myUserDetailsService.getCurrentUser();
+        System.out.println(currentUserName);
+        if(!myUserDetailsService.checkUserRole("ADMIN")) {
+            System.out.println(myUserDetailsService.checkUserRole("ADMIN"));
+            System.out.println("not admin");
+            if (!currentUserName.equals(user.getUsername())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("put is not allowed on other users and you cant change username"));
+            }
+        }
+
+          /* var currentUser = userRepo.findByUsername(currentUserName)
+                   .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(" user not found")));
+           if(currentUser.getRoles().contains("ADMIN")){
+               System.out.println("user is admin");
+           }else {
+
+           };
+
+           */
+
         user.setId(id);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);

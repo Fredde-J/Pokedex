@@ -16,15 +16,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping // ?username=
+    @GetMapping
     public ResponseEntity<List<User>> findAllUsers(@RequestParam(required = false) String username) {
         var users = userService.findAll(username);
-        // return new ResponseEntity<>(users, HttpStatus.OK); // 200
-        // return ResponseEntity.status(HttpStatus.OK);
+
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/{id}") // /api/v1/users/xxxxxxxxxxxx
+    @GetMapping("/{id}")
     public ResponseEntity<User> findUserById(@PathVariable String id) {
         return ResponseEntity.ok(userService.findById(id));
     }
@@ -41,7 +40,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT) // 204
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable String id) {
         userService.delete(id);
     }
