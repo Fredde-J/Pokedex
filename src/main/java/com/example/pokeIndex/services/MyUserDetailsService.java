@@ -50,8 +50,6 @@ public class MyUserDetailsService implements UserDetailsService {
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().toUpperCase().equals("ROLE_"+role));
     }
     public String getCurrentUser() {
-        // the login session is stored between page reloads,
-        // and we can access the current authenticated User with this
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
