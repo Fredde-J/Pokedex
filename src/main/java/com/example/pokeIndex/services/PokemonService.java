@@ -1,14 +1,17 @@
 package com.example.pokeIndex.services;
 
+import com.example.pokeIndex.dto.PokemonDto;
 import com.example.pokeIndex.entities.Pokemon;
+import com.example.pokeIndex.entities.PokemonName;
 import com.example.pokeIndex.mapper.PokemonMapper;
-import com.example.pokeIndex.repositories.PokemonsNameRepo;
+import com.example.pokeIndex.repositories.PokemonNameRepo;
 import com.example.pokeIndex.repositories.PokemonsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,27 +25,36 @@ public class PokemonService {
     @Autowired
     private PokemonConsumerService pokemonConsumerService;
     @Autowired
-    private PokemonsNameRepo pokemonsNameRepo;
+    private PokemonNameRepo pokemonsNameRepo;
 
 
 
 
-    public List<Pokemon> findAll(String name){
-        var pokemons = pokemonsRepo.findAll();
-        pokemons = pokemons.stream()
-                .filter(pokemon -> pokemon.getName().toLowerCase().contains(name.toLowerCase()))
-                .collect(Collectors.toList());
-        if(pokemons.isEmpty()){
-            var pokemonsDto = pokemonConsumerService.searchPokemon(name);
-            if(pokemonsDto!=null){
-                System.out.println("pokemon: "+ pokemonsDto.getName());
-                var pokemon = pokemonMapper.pokemonDtoToPokemon(pokemonsDto);
-                pokemonsRepo.save(pokemon);
-                pokemons.add(pokemon);
+    public List<Pokemon> findAll(String name)  {
+       List<Pokemon> pokemons=new ArrayList<>();
+       List<PokemonName> pokemonNames = new ArrayList<>();
+       try{
+          pokemons = pokemonsRepo.findByNameRegexQuery(name);
+          pokemonNames = pokemonsNameRepo.findAll();
+       }catch (Exception e){
+           System.out.println(e);
+       }
+        List<Object> pokemonNamesThatEqualsName = pokemonNames.get(0).getNames().stream().filter(pokemonName -> pokemonName.toString().contains(name.toLowerCase())).collect(Collectors.toList());
+        System.out.println(pokemonNamesThatEqualsName);
+        System.out.println(pokemons.size());
+        System.out.println(pokemonNamesThatEqualsName.size());
+        if(pokemons.size()<pokemonNamesThatEqualsName.size()){
+
+            var pokemonsDtos = pokemonConsumerService.searchPokemons(pokemonNamesThatEqualsName);
+            if(pokemonsDtos!=null){
+                for (PokemonDto pokemonDto : pokemonsDtos){
+                    var pokemon = pokemonMapper.pokemonDtoToPokemon(pokemonDto);
+                    pokemonsRepo.save(pokemon);
+                    pokemons.add(pokemon);
+                }
             }
         }
         return pokemons;
-
     };
 
     public List<Pokemon> findByAbilityAndType(String ability, String type) {

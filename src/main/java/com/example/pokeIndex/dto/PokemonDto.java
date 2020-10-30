@@ -1,16 +1,11 @@
 package com.example.pokeIndex.dto;
 
-import com.example.pokeIndex.entities.Pokemon;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class PokemonDto {
-    @Autowired
-    //private Pokemon pokemon = new Pokemon();
 
     @JsonProperty("name")
     private String name;

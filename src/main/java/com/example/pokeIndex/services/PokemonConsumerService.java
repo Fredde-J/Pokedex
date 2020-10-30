@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 @Service
 @ConfigurationProperties(prefix = "example.pokemon", ignoreUnknownFields = false)
 public class PokemonConsumerService {
@@ -18,14 +22,22 @@ public class PokemonConsumerService {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    public PokemonDto searchPokemon(String name){
-        var urlWithName = url +"pokemon/"+ name;
-        System.out.println(urlWithName);
-        var pokemon = restTemplate.getForObject(urlWithName, PokemonDto.class);
-        if(pokemon==null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"no pokemon found!");
+    public List<PokemonDto> searchPokemons(List<Object> pokemonNames) {
+        List<PokemonDto> pokemonDtos = new ArrayList<>();
+
+        for (int i = 0; i <pokemonNames.size() ; i++) {
+            Map<String, Object> map = (Map<String, Object>) pokemonNames.get(i);
+            for (String key : map.keySet()) {
+                if(key.equals("url")){
+                    String urlWithName = map.get(key).toString();
+                    System.out.println(urlWithName);
+                    pokemonDtos.add(restTemplate.getForObject(urlWithName, PokemonDto.class));
+                }
+                // String urlWithName = url+"pokemon/"+ map.get(key).toString();
+                //
+            }
         }
-        return pokemon;
+        return pokemonDtos;
     };
 
     public PokemonDto searchPokemonByAbilitiesAndTypes(String ability, String type){
