@@ -31,8 +31,15 @@ public class PokemonService {
 
 
     public List<Pokemon> findAll(String name)  {
-       List<Pokemon> pokemons=new ArrayList<>();
-       List<PokemonName> pokemonNames = new ArrayList<>();
+        if(name==null){
+            return pokemonsRepo.findAll();
+        }
+        if (name.length()<3){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("You need at least 3 letters to search pokemons by name"));
+        }
+
+        List<Pokemon> pokemons=new ArrayList<>();
+        List<PokemonName> pokemonNames = new ArrayList<>();
        try{
           pokemons = pokemonsRepo.findByNameRegexQuery(name);
           pokemonNames = pokemonsNameRepo.findAll();
@@ -40,11 +47,8 @@ public class PokemonService {
            System.out.println(e);
        }
         List<Object> pokemonNamesThatEqualsName = pokemonNames.get(0).getNames().stream().filter(pokemonName -> pokemonName.toString().contains(name.toLowerCase())).collect(Collectors.toList());
-        System.out.println(pokemonNamesThatEqualsName);
-        System.out.println(pokemons.size());
-        System.out.println(pokemonNamesThatEqualsName.size());
-        if(pokemons.size()<pokemonNamesThatEqualsName.size()){
 
+        if(pokemons.size()<pokemonNamesThatEqualsName.size()){
             var pokemonsDtos = pokemonConsumerService.searchPokemons(pokemonNamesThatEqualsName);
             if(pokemonsDtos!=null){
                 for (PokemonDto pokemonDto : pokemonsDtos){
@@ -58,7 +62,6 @@ public class PokemonService {
     };
 
     public List<Pokemon> findByAbilityAndType(String ability, String type) {
-
         System.out.println(ability);
         System.out.println(type);
         var pokemons = pokemonsRepo.findAll();
@@ -68,7 +71,6 @@ public class PokemonService {
                 .filter(pokemon -> pokemon.getTypes().toString().contains(type.toLowerCase())).collect(Collectors.toList());
         System.out.println(pokemons);
         if(pokemons.isEmpty()){
-            System.out.println("tomt");
             pokemonConsumerService.searchPokemonByAbilitiesAndTypes(ability,type);
         }
 

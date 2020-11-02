@@ -1,28 +1,32 @@
 package com.example.pokeIndex.entities;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
 public class Pokemon implements Serializable {
     private static final long serialVersionUID = 669636611022282531L;
     @Id
     private String id;
+    @Indexed(unique=true)
     private String name;
     private List<Object> abilities;
     private List<Object> stats;
     private List<Object> types;
+    private int height;
+    private int weight;
 
     public Pokemon() {
 
     }
 
-    public Pokemon(String name, List<Object> abilities, List<Object> stats, String species,List<Object> types) {
+    public Pokemon(String name, List<Object> abilities, List<Object> types,int height, int weight) {
         this.name = name;
         this.abilities = abilities;
-        this.stats = stats;
         this.types = types;
+        this.height= height;
+        this.weight =  weight;
     }
 
     public String getId() {
@@ -49,19 +53,27 @@ public class Pokemon implements Serializable {
         this.abilities = abilities;
     }
 
-    public List<Object> getStats() {
-        return stats;
-    }
-
-    public void setStats(List<Object> stats) {
-        this.stats = stats;
-    }
-
     public List<Object> getTypes() {
         return types;
     }
 
     public void setTypes(List<Object> types) {
         this.types = types;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 }

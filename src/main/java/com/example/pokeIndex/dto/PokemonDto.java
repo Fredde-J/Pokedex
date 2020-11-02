@@ -11,26 +11,26 @@ public class PokemonDto {
     private String name;
     @JsonProperty("abilities")
     private List<Object> abilities = new ArrayList<>();
-    @JsonProperty("stats")
-    private List<Object> stats;
     @JsonProperty("types")
     private List<Object> types;
+    @JsonProperty("height")
+    private int height;
+    @JsonProperty("weight")
+    private int weight;
+
 
 
     public PokemonDto() {
 
     }
 
-    public PokemonDto(String name, List<Object> abilities, List<Object> stats , List<Object> types ) {
+    public PokemonDto(String name, List<Object> abilities, List<Object> types, int height, int weight) {
         this.name = name;
         this.abilities = abilities;
-        this.stats = stats;
         this.types = types;
-
-       // Pokemon pokemon = new Pokemon(name,abilities,stats,species);
+        this.height = height;
+        this.weight = weight;
     }
-
-
 
     public String getName() {
         return name;
@@ -48,19 +48,27 @@ public class PokemonDto {
         this.abilities = abilities;
     }
 
-    public List<Object> getStats() {
-        return stats;
-    }
-
-    public void setStats(List<Object> stats) {
-        this.stats = stats;
-    }
-
     public List<Object> getTypes() {
         return types;
     }
 
     public void setTypes(List<Object> types) {
         this.types = types;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 }
