@@ -1,10 +1,7 @@
 package com.example.pokeIndex.controllers;
 
-
 import com.example.pokeIndex.entities.User;
-import com.example.pokeIndex.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -14,15 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
-public class UserController {
-    @Autowired
-    private UserService userService;
+@RequestMapping("/api/v1/pokemonsAbilities")
+public class PokemonAbilityController {
 
     @Operation(summary = "Find a user with a username. if name is empty all pokemons from db will show up")
     @GetMapping
-    @Secured("ROLE_ADMIN")
-    public ResponseEntity<List<User>> findAllUsersbyName(@RequestParam(required = false) String username) {
+    @Secured("ROLE_USER")
+    public ResponseEntity<List<User>> findAllAbilitiesByName(@RequestParam(required = false) String username) {
         var users = userService.findAll(username);
         return ResponseEntity.ok(users);
     }

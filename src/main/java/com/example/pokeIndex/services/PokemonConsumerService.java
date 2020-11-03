@@ -1,12 +1,11 @@
 package com.example.pokeIndex.services;
 
+import com.example.pokeIndex.dto.PokemonAbilityDto;
 import com.example.pokeIndex.dto.PokemonDto;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,18 +35,11 @@ public class PokemonConsumerService {
         return pokemonDtos;
     };
 
-    public PokemonDto searchPokemonByAbilitiesAndTypes(String ability, String type){
-        var urlWithAbility = url +"ability/"+ ability;
-        var urlWithType = url +"type/"+ type;
-        System.out.println(urlWithAbility);
-        System.out.println(urlWithType);
-        var pokemon = restTemplate.getForObject(urlWithType, PokemonDto.class);
-        if(pokemon==null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"no pokemon found!");
-        }
-        return pokemon;
+    public PokemonAbilityDto searchAbility(String abilityName) {
+        String urlWithName = url+"/ability/"+abilityName;
+        var pokemonAbilityDto = restTemplate.getForObject(urlWithName, PokemonAbilityDto.class);
+        return pokemonAbilityDto;
     };
-    public void setUrl(String url){
-        this.url = url;
-    }
+
+
 }

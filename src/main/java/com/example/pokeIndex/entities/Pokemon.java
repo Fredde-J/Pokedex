@@ -12,7 +12,6 @@ public class Pokemon implements Serializable {
     @Indexed(unique=true)
     private String name;
     private List<Object> abilities;
-    private List<Object> stats;
     private List<Object> types;
     private int height;
     private int weight;

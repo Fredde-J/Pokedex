@@ -10,5 +10,11 @@ import java.util.List;
 @Repository
 public interface PokemonsRepo extends MongoRepository<Pokemon, String> {
     @Query("{'name' : {$regex : ?0}}")
-    public List<Pokemon> findByNameRegexQuery(String PokemonName);
+    List<Pokemon> findByNameRegexQuery(String PokemonName);
+
+    @Query("{ 'abilities.ability.name': ?0, 'types.type.name': ?1 }")
+    List<Pokemon> findByAbilityType(String ability, String type);
+
+    @Query("{ 'abilities.ability.name': ?0, 'types.type.name': ?1,'height': ?2,'weight': ?3 }")
+    List<Pokemon> findByAbilityTypeHeightWeight(String ability, String type, int height, int Weight);
 }

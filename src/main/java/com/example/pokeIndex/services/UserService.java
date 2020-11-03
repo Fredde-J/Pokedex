@@ -57,17 +57,6 @@ public class UserService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("put is not allowed on other users and you cant change username"));
             }
         }
-
-          /* var currentUser = userRepo.findByUsername(currentUserName)
-                   .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(" user not found")));
-           if(currentUser.getRoles().contains("ADMIN")){
-               System.out.println("user is admin");
-           }else {
-
-           };
-
-           */
-
         user.setId(id);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);

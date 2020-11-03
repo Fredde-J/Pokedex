@@ -1,26 +1,23 @@
-package com.example.pokeIndex.entities;
+package com.example.pokeIndex.dto;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class PokemonAbility implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id
-    private String id;
-    @Indexed(unique=true)
+public class PokemonAbilityDto {
+    @JsonProperty("name")
     String name;
+    @JsonProperty("effect_entries")
     List<String> effectDescriptions;
+    @JsonProperty("pokemon")
     List<String> pokemons;
 
-    public PokemonAbility() {
+    public PokemonAbilityDto() {
     }
 
-    public PokemonAbility(String name, List<String> effect, List<String> pokemons) {
+    public PokemonAbilityDto(String name, List<String> effectDescriptions, List<String> pokemons) {
         this.name = name;
-        this.effectDescriptions = effect;
+        this.effectDescriptions = effectDescriptions;
         this.pokemons = pokemons;
     }
 
@@ -48,3 +45,4 @@ public class PokemonAbility implements Serializable {
         this.pokemons = pokemons;
     }
 }
+
