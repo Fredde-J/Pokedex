@@ -21,12 +21,11 @@ public class PokemonController {
 
     @Operation(summary = "find a pokemon with a name with at least 3 letters. if name is empty all pokemons from db will show up")
     @GetMapping
-    public ResponseEntity<List<Pokemon>> findPokemonByName(@Parameter(description = "name to be searched") @RequestParam(required = false) String name) {
-        System.out.println(name);
-        var pokemons = pokemonService.findAll(name);
-
+    public ResponseEntity<List<Pokemon>> findPokemons(@Parameter(description = "name to be searched") @RequestParam(required = false) String name,
+                                                      @RequestParam(required = false)String ability,@RequestParam(required = false)String type,
+                                                      @RequestParam(required = false) Integer weight ) {
+        var pokemons = pokemonService.findAll(name,ability,type,weight);
         return ResponseEntity.ok(pokemons);
-
     }
 
     @Operation(summary = "Find a pokemon with a id")
@@ -34,13 +33,15 @@ public class PokemonController {
     public ResponseEntity<Pokemon> findByPokemonById(@PathVariable String id) {
         return ResponseEntity.ok(pokemonService.findById(id));
     }
-
+/*
     @Operation(summary = "Find all pokemons that have the a certain ability and type")
     @GetMapping("/{ability}/{type}")
     public ResponseEntity<List<Pokemon>> findPokemonByAbilityAndType(@PathVariable String ability, @PathVariable String type) {
         var pokemons = pokemonService.findByAbilityAndType(ability, type);
         return ResponseEntity.ok(pokemons);
     }
+
+
 
     @Operation(summary = "Find all pokemons that have the a certain ability,type,height and weight")
     @GetMapping("/{ability}/{type}/{height}/{weight}")
@@ -49,6 +50,8 @@ public class PokemonController {
         var pokemons = pokemonService.findByAbilityTypeHeightWeight(ability, type, height, weight);
         return ResponseEntity.ok(pokemons);
     }
+
+ */
 
     @Operation(summary = "Add a new pokemon to the database")
     @PostMapping

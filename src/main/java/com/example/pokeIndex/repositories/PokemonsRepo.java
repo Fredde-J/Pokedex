@@ -12,9 +12,15 @@ public interface PokemonsRepo extends MongoRepository<Pokemon, String> {
     @Query("{'name' : {$regex : ?0}}")
     List<Pokemon> findByNameRegexQuery(String PokemonName);
 
-    @Query("{ 'abilities.ability.name': ?0, 'types.type.name': ?1 }")
-    List<Pokemon> findByAbilityType(String ability, String type);
+    @Query("{'abilities.ability.name': ?0}")
+    List<Pokemon> findByAbility(String ability);
 
-    @Query("{ 'abilities.ability.name': ?0, 'types.type.name': ?1,'height': ?2,'weight': ?3 }")
-    List<Pokemon> findByAbilityTypeHeightWeight(String ability, String type, int height, int Weight);
+    @Query("{'types.type.name': ?0}")
+    List<Pokemon> findByType(String type);
+
+    @Query("{'weight': ?0}")
+    List<Pokemon> findByWeight(Integer weight);
+
+    @Query("{'name':{$regex : ?0},'abilities.ability.name': ?1, 'types.type.name': ?2,'weight': ?3 }")
+    List<Pokemon> findByNameAbilityTypeWeight(String name,String ability, String type, int Weight);
 }

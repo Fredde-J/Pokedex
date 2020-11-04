@@ -12,16 +12,24 @@ public class PokemonAbility implements Serializable {
     private String id;
     @Indexed(unique=true)
     String name;
-    List<String> effectDescriptions;
-    List<String> pokemons;
+    List<Object> effectDescriptions;
+    List<Object> pokemons;
 
     public PokemonAbility() {
     }
 
-    public PokemonAbility(String name, List<String> effect, List<String> pokemons) {
+    public PokemonAbility(String name, List<Object> effect, List<Object> pokemons) {
         this.name = name;
         this.effectDescriptions = effect;
         this.pokemons = pokemons;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -32,19 +40,19 @@ public class PokemonAbility implements Serializable {
         this.name = name;
     }
 
-    public List<String> getEffectDescriptions() {
+    public List<Object> getEffectDescriptions() {
         return effectDescriptions;
     }
 
-    public void setEffectDescriptions(List<String> effectDescriptions) {
+    public void setEffectDescriptions(List<Object> effectDescriptions) {
         this.effectDescriptions = effectDescriptions;
     }
 
-    public List<String> getPokemons() {
+    public List<Object> getPokemons() {
         return pokemons;
     }
 
-    public void setPokemons(List<String> pokemons) {
+    public void setPokemons(List<Object> pokemons) {
         this.pokemons = pokemons;
     }
 }

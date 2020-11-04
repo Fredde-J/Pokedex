@@ -1,9 +1,7 @@
 package com.example.pokeIndex.services;
 
-import com.example.pokeIndex.dto.PokemonDto;
-import com.example.pokeIndex.entities.Pokemon;
+import com.example.pokeIndex.dto.PokemonAbilityDto;
 import com.example.pokeIndex.entities.PokemonAbility;
-import com.example.pokeIndex.entities.PokemonName;
 import com.example.pokeIndex.mapper.PokemonAbilityMapper;
 import com.example.pokeIndex.repositories.PokemonAbilityRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PokemonAbilityService {
@@ -25,28 +22,55 @@ public class PokemonAbilityService {
     @Autowired
     PokemonAbilityMapper PokemonAbilityMapper;
 
+    
     public List<PokemonAbility> findAllByName(String abilityName) {
+        System.out.println(abilityName);
         if (abilityName == null) {
             return pokemonAbilityRepo.findAll();
         }
-        if (abilityName.length() < 3) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("You need at least 3 letters to search pokemons abilities by name"));
-        }
-        PokemonAbility pokemonAbility = new PokemonAbility();
-        try {
-            pokemonAbility = pokemonAbilityRepo.findByName(abilityName);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        if(pokemonAbility==null){
-            var pokemonsAbilityDto = pokemonConsumerService.searchAbility(abilityName);
-            if(pokemonsAbilityDto==null){
-               throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("ability with name "+abilityName+" not found"));
+        abilityName= abilityName.toLowerCase();
+        List<PokemonAbility> pokemonAbilities = new ArrayList<>();
+        System.out.println("test2");
+        pokemonAbilities.add(pokemonAbilityRepo.findByName(abilityName));
+        System.out.println("test3");
+        if(pokemonAbilities.isEmpty()||pokemonAbilities.get(0)==null){
+            pokemonAbilities.clear();
+            PokemonAbilityDto pokemonAbilityDto;
+            try{
+                pokemonAbilityDto = pokemonConsumerService.searchAbility(abilityName);
+            }catch (Exception e){
+                System.out.println(e);
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,String.format("no ability found with name"+ abilityName));
             }
-            pokemonAbility = PokemonAbilityMapper.pokemonAbilityDtoToPokemonAbility(pokemonsAbilityDto);
+
+          var pokemonAbility = PokemonAbilityMapper.pokemonAbilityDtoToPokemonAbility(pokemonAbilityDto);
+            pokemonAbilities.add(pokemonAbility);
             pokemonAbilityRepo.save(pokemonAbility);
         }
 
-        return pokemonAbility;
+        return pokemonAbilities;
+    }
+    public PokemonAbility findById(String id) { 
+        return pokemonAbilityRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Could not find the ability by id %s.", id)));
+        
+    }
+
+    public PokemonAbility save(PokemonAbility pokemonAbility) {
+        return pokemonAbilityRepo.save(pokemonAbility);
+    }
+
+    public void update(String id, PokemonAbility pokemonAbility) {
+        if (!pokemonAbilityRepo.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("could not find ability by id:" + id));
+        }
+        pokemonAbility.setId(id);
+        pokemonAbilityRepo.save(pokemonAbility);
+    }
+
+    public void delete(String id) {
+        if (!pokemonAbilityRepo.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, String.format("could not find ability by id" + id));
+        }
+        pokemonAbilityRepo.deleteById(id);
     }
 }

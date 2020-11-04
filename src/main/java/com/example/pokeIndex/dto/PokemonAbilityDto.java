@@ -8,14 +8,14 @@ public class PokemonAbilityDto {
     @JsonProperty("name")
     String name;
     @JsonProperty("effect_entries")
-    List<String> effectDescriptions;
+    List<Object> effectDescriptions;
     @JsonProperty("pokemon")
-    List<String> pokemons;
+    List<Object> pokemons;
 
     public PokemonAbilityDto() {
     }
 
-    public PokemonAbilityDto(String name, List<String> effectDescriptions, List<String> pokemons) {
+    public PokemonAbilityDto(String name, List<Object> effectDescriptions, List<Object> pokemons) {
         this.name = name;
         this.effectDescriptions = effectDescriptions;
         this.pokemons = pokemons;
@@ -29,19 +29,19 @@ public class PokemonAbilityDto {
         this.name = name;
     }
 
-    public List<String> getEffectDescriptions() {
+    public List<Object> getEffectDescriptions() {
         return effectDescriptions;
     }
 
-    public void setEffectDescriptions(List<String> effectDescriptions) {
+    public void setEffectDescriptions(List<Object> effectDescriptions) {
         this.effectDescriptions = effectDescriptions;
     }
 
-    public List<String> getPokemons() {
+    public List<Object> getPokemons() {
         return pokemons;
     }
 
-    public void setPokemons(List<String> pokemons) {
+    public void setPokemons(List<Object> pokemons) {
         this.pokemons = pokemons;
     }
 }

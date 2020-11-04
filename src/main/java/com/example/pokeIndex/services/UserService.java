@@ -54,7 +54,7 @@ public class UserService {
             System.out.println(myUserDetailsService.checkUserRole("ADMIN"));
             System.out.println("not admin");
             if (!currentUserName.equals(user.getUsername())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("put is not allowed on other users and you cant change username"));
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, String.format("put is not allowed on other users and you cant change username"));
             }
         }
         user.setId(id);
