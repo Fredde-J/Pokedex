@@ -19,28 +19,27 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Operation(summary = "Find a user with a username. if name is empty all pokemons from db will show up")
+    @Operation(summary = "Find a user with a username. if name is empty all pokemons from db will show up, need role Admin to access")
     @GetMapping
     @Secured("ROLE_ADMIN")
     public ResponseEntity<List<User>> findAllUsersbyName(@RequestParam(required = false) String username) {
         var users = userService.findAll(username);
         return ResponseEntity.ok(users);
     }
-    @Operation(summary = "Find a user with a id")
+    @Operation(summary = "Find a user with a id, need role Admin to access")
     @GetMapping("/{id}")
     @Secured("ROLE_ADMIN")
     public ResponseEntity<User> findUserById(@PathVariable String id) {
         return ResponseEntity.ok(userService.findById(id));
     }
 
-    @Operation(summary = "Add a new user to the database")
+    @Operation(summary = "Add a new user to the database, no authentication needed")
     @PostMapping
-    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<User> saveUser(@Validated @RequestBody User user) {
         return ResponseEntity.ok(userService.save(user));
     }
 
-    @Operation(summary = "Update a user by id")
+    @Operation(summary = "Update a user by id, users can only update themself and admin can change all users")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Secured({"ROLE_ADMIN","ROLE_USER"})
@@ -49,7 +48,7 @@ public class UserController {
         userService.update(id, user);
     }
 
-    @Operation(summary = "Delete a user by id")
+    @Operation(summary = "Delete a user by id, need role Admin to access")
     @DeleteMapping("/{id}")
     @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.NO_CONTENT)

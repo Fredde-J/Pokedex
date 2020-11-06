@@ -1,12 +1,10 @@
 package com.example.pokeIndex.services;
-
 import com.example.pokeIndex.dto.PokemonAbilityDto;
 import com.example.pokeIndex.dto.PokemonDto;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

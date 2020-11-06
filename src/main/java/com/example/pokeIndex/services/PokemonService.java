@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Service
 public class PokemonService {
     @Autowired
@@ -25,10 +24,9 @@ public class PokemonService {
     @Autowired
     private PokemonNameRepo pokemonsNameRepo;
 
-
     public List<Pokemon> findAll(String name, String ability, String type, Integer weight) {
         List<Pokemon> pokemons = new ArrayList<>();
-        if(!(name == null)&&!(ability==null)&&!(type==null)&&!(weight==null)){
+        if(name != null && ability != null && type != null && weight != null){
         pokemons = pokemonsRepo.findByNameAbilityTypeWeight(name,ability,type,weight);
         }
         else if (!(name==null)){
@@ -54,12 +52,12 @@ public class PokemonService {
                     }
                 }
             }
-        }else if (!(ability==null)) {
+        }else if (ability!=null) {
            pokemons = pokemonsRepo.findByAbility(ability);
-        }else if (!(type==null)) {
+        }else if (type!=null) {
             System.out.println(type);
             pokemons = pokemonsRepo.findByType(type);
-        }else if (!(weight==null)) {
+        }else if (weight!=null) {
             pokemons = pokemonsRepo.findByWeight(weight);
         }else {
             pokemons = pokemonsRepo.findAll();

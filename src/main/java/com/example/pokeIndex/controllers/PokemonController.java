@@ -19,7 +19,7 @@ public class PokemonController {
     @Autowired
     private PokemonService pokemonService;
 
-    @Operation(summary = "find a pokemon with a name with at least 3 letters. if name is empty all pokemons from db will show up")
+    @Operation(summary = "Find a pokemons with a name,ability,type or weight or search with all four attributes, if all is empty all pokemons will show up.  No authentication needed")
     @GetMapping
     public ResponseEntity<List<Pokemon>> findPokemons(@Parameter(description = "name to be searched") @RequestParam(required = false) String name,
                                                       @RequestParam(required = false)String ability,@RequestParam(required = false)String type,
@@ -28,39 +28,20 @@ public class PokemonController {
         return ResponseEntity.ok(pokemons);
     }
 
-    @Operation(summary = "Find a pokemon with a id")
+    @Operation(summary = "Find a pokemon with a id, no authentication needed")
     @GetMapping("/{id}")
     public ResponseEntity<Pokemon> findByPokemonById(@PathVariable String id) {
         return ResponseEntity.ok(pokemonService.findById(id));
     }
-/*
-    @Operation(summary = "Find all pokemons that have the a certain ability and type")
-    @GetMapping("/{ability}/{type}")
-    public ResponseEntity<List<Pokemon>> findPokemonByAbilityAndType(@PathVariable String ability, @PathVariable String type) {
-        var pokemons = pokemonService.findByAbilityAndType(ability, type);
-        return ResponseEntity.ok(pokemons);
-    }
 
-
-
-    @Operation(summary = "Find all pokemons that have the a certain ability,type,height and weight")
-    @GetMapping("/{ability}/{type}/{height}/{weight}")
-    public ResponseEntity<List<Pokemon>> findPokemonByAbilityTypeHeightWeight(@PathVariable String ability, @PathVariable String type, @PathVariable int height, @PathVariable int weight) {
-        System.out.println("ok");
-        var pokemons = pokemonService.findByAbilityTypeHeightWeight(ability, type, height, weight);
-        return ResponseEntity.ok(pokemons);
-    }
-
- */
-
-    @Operation(summary = "Add a new pokemon to the database")
+    @Operation(summary = "Add a new pokemon to the database, need role Admin to access")
     @PostMapping
     @Secured("ROLE_ADMIN")
     public ResponseEntity<Pokemon> savePokemon(@RequestBody Pokemon pokemon) {
         return ResponseEntity.ok(pokemonService.save(pokemon));
     }
 
-    @Operation(summary = "Update a pokemon by id")
+    @Operation(summary = "Update a pokemon by id, need role Admin to access")
     @PutMapping("/{id}")
     @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -68,7 +49,7 @@ public class PokemonController {
         pokemonService.update(id, pokemon);
     }
 
-    @Operation(summary = "Delete a pokemon by id")
+    @Operation(summary = "Delete a pokemon by id, need role Admin to access")
     @DeleteMapping("/{id}")
     @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.NO_CONTENT)

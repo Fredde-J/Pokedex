@@ -22,37 +22,38 @@ public class PokemonAbilityService {
     @Autowired
     PokemonAbilityMapper PokemonAbilityMapper;
 
-    
+
     public List<PokemonAbility> findAllByName(String abilityName) {
-        System.out.println(abilityName);
+        abilityName = abilityName.toLowerCase();
+
         if (abilityName == null) {
             return pokemonAbilityRepo.findAll();
         }
-        abilityName= abilityName.toLowerCase();
+
         List<PokemonAbility> pokemonAbilities = new ArrayList<>();
-        System.out.println("test2");
         pokemonAbilities.add(pokemonAbilityRepo.findByName(abilityName));
-        System.out.println("test3");
-        if(pokemonAbilities.isEmpty()||pokemonAbilities.get(0)==null){
+
+        if (pokemonAbilities.isEmpty() || pokemonAbilities.get(0) == null) {
             pokemonAbilities.clear();
             PokemonAbilityDto pokemonAbilityDto;
-            try{
+            try {
                 pokemonAbilityDto = pokemonConsumerService.searchAbility(abilityName);
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println(e);
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND,String.format("no ability found with name"+ abilityName));
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("no ability found with name" + abilityName));
             }
 
-          var pokemonAbility = PokemonAbilityMapper.pokemonAbilityDtoToPokemonAbility(pokemonAbilityDto);
+            var pokemonAbility = PokemonAbilityMapper.pokemonAbilityDtoToPokemonAbility(pokemonAbilityDto);
             pokemonAbilities.add(pokemonAbility);
             pokemonAbilityRepo.save(pokemonAbility);
         }
 
         return pokemonAbilities;
     }
-    public PokemonAbility findById(String id) { 
+
+    public PokemonAbility findById(String id) {
         return pokemonAbilityRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Could not find the ability by id %s.", id)));
-        
+
     }
 
     public PokemonAbility save(PokemonAbility pokemonAbility) {

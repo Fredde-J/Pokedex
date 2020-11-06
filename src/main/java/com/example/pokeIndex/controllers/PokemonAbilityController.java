@@ -20,7 +20,7 @@ public class PokemonAbilityController {
     @Autowired
     PokemonAbilityService pokemonAbilityService;
 
-    @Operation(summary = "Find a ability with a name. if name is empty all abilities from db will show up")
+    @Operation(summary = "Find a ability with a name. if name is empty all abilities from db will show up, need role user or admin to access")
     @GetMapping
     @Secured({"ROLE_ADMIN","ROLE_USER"})
     public ResponseEntity<List<PokemonAbility>> findAllAbilitiesByName(@RequestParam(required = false) String name) {
@@ -28,21 +28,21 @@ public class PokemonAbilityController {
         return ResponseEntity.ok(pokemonAbilities);
     }
 
-    @Operation(summary = "Find a ability with a id")
+    @Operation(summary = "Find a ability with a id, need role user or admin to access")
     @GetMapping("/{id}")
     @Secured({"ROLE_ADMIN","ROLE_USER"})
     public ResponseEntity<PokemonAbility> findAbilityById(@PathVariable String id) {
         return ResponseEntity.ok(pokemonAbilityService.findById(id));
     }
 
-    @Operation(summary = "Add a new ability")
+    @Operation(summary = "Add a new ability, need role admin to access ")
     @PostMapping
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity<PokemonAbility> saveAbility(@Validated @RequestBody PokemonAbility pokemonAbility) {
         return ResponseEntity.ok(pokemonAbilityService.save(pokemonAbility));
     }
 
-    @Operation(summary = "Update a ability by id")
+    @Operation(summary = "Update a ability by id, need role admin to access")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Secured("ROLE_ADMIN")
@@ -51,7 +51,7 @@ public class PokemonAbilityController {
         pokemonAbilityService.update(id, pokemonAbility);
     }
 
-    @Operation(summary = "Delete a ability by id")
+    @Operation(summary = "Delete a ability by id, need role admin to access")
     @DeleteMapping("/{id}")
     @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.NO_CONTENT)

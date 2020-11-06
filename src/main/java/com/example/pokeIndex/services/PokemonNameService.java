@@ -1,5 +1,4 @@
 package com.example.pokeIndex.services;
-
 import com.example.pokeIndex.dto.PokemonNameDto;
 import com.example.pokeIndex.mapper.PokemonNameMapper;
 import com.example.pokeIndex.repositories.PokemonNameRepo;
@@ -22,12 +21,10 @@ public class PokemonNameService {
 
     public PokemonNameService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
-
     }
 
     //@PostConstruct
     public void getPokemonsNames(){
-
         PokemonNameDto pokemonNameDto;
         try{
             pokemonNameDto = restTemplate.getForObject(url, PokemonNameDto.class);
